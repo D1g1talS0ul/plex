@@ -1,0 +1,9 @@
+# Likely just need to do this once
+cd pms-docker
+# Edit dockerfile like you found here
+# https://www.reddit.com/r/PleX/comments/fblw2f/a_quick_work_on_plex_docker_nvdecnvenc/
+git diff --patch > ../Dockerfile.patch
+
+# Do this everytime
+# git clone/pull https://github.com/plexinc/pms-docker.git
+git apply Dockerfile.patch

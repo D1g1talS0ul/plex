@@ -1,0 +1,46 @@
+# to add new server http://192.168.1.14:32400/manage/index.html#!/setup
+version: '3.5'
+services:
+ plex:
+   image: pms-docker-nvidia:mine
+   container_name: plex
+   restart: unless-stopped
+   privileged: true
+   deploy:
+     resources:
+       reservations:
+         devices:
+           - capabilities:
+             - gpu
+   ports:
+     - 32400:32400/tcp
+     - 3005:3005/tcp
+     - 8324:8324/tcp
+     - 32469:32469/tcp
+     - 1900:1900/udp
+     - 32410:32410/udp
+     - 32412:32412/udp
+     - 32413:32413/udp
+     - 32414:32414/udp
+   devices:
+     - /dev/dri:/dev/dri
+   environment:
+     - DEBUG=false
+     - PLEX_UID=1000
+     - PLEX_GID=1000
+     - TZ=US/Mountain
+     - CHANGE_CONFIG_DIR_OWNERSHIP=false
+     - PLEX_CLAIM=claim-random-stuff
+     - ADVERTISE_IP=http://192.168.1.14:32400
+     - ALLOWED_NETWORKS=192.168.1.0/24
+   hostname: PWNplex
+   volumes:
+     - /home/me/plex/plexmediaserver:/config
+     - /mnt/ramdisk:/transcode
+     - /mnt/lush/Plex:/mnt/Plex
+     - /mnt/lush/Plex3:/mnt/Plex3
+     - /mnt/lush/movies:/mnt/movies
+   build:
+     context: .
+     shm_size: '8gb'
+   shm_size: '8gb'
