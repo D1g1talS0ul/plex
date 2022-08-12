@@ -1,9 +1,34 @@
-# Likely just need to do this once
-cd pms-docker
-# Edit dockerfile like you found here
-# https://www.reddit.com/r/PleX/comments/fblw2f/a_quick_work_on_plex_docker_nvdecnvenc/
-git diff --patch > ../Dockerfile.patch
+## make sure versions match on the OS and inside the container
 
-# Do this everytime
-# git clone/pull https://github.com/plexinc/pms-docker.git
-git apply Dockerfile.patch
+download the latest production drivers from nvidia's website https://www.nvidia.com/en-us/drivers/unix/
+As of writting it's NVIDIA-Linux-x86_64-515.65.01.run
+wget https://us.download.nvidia.com/XFree86/Linux-x86_64/515.65.01/NVIDIA-Linux-x86_64-515.65.01.run
+
+check which version of nvidia-dkms is installed
+apt list --installed | grep nvidia-dkms
+update to match Nvidia production driver if needed
+apt install nvidia-dkms-515
+
+
+install the Nvidia driver just downloaded from nvidia.com
+
+
+vi pms-docker/Dockerfile update FROM to latest tag found at https://hub.docker.com/r/nvidia/cuda/tags
+as of writting it's nvidia/cuda:11.7.0-base-ubuntu20.04
+now update the libnvidia lines libnvidia-encode-515 and libnvidia-decode-515
+
+build the containers
+
+## check versions
+
+me@container:~/plex$ nvidia-smi 
+Fri Aug 12 11:57:18 2022       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 515.65.01    Driver Version: 515.65.01    CUDA Version: 11.7     |
+|-------------------------------+----------------------+----------------------+
+
+me@container:~/plex$ docker exec -it plex apt list --installed | grep libnvidia
+
+## other
+most lines in ./update.sh have been commented out the pms-docker git repost is rarely updated so all
+./update.sh does is build the container

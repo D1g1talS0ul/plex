@@ -3,6 +3,9 @@ version: '3.5'
 services:
  plex:
    image: pms-docker-nvidia:mine
+   build: 
+     context: ../..
+     dockerfile: pms-docker/Dockerfile
    container_name: plex
    restart: unless-stopped
    privileged: true
@@ -24,13 +27,18 @@ services:
      - 32414:32414/udp
    devices:
      - /dev/dri:/dev/dri
+     - /dev/nvidia0:/dev/nvidia0
+     - /dev/nvidiactl:/dev/nvidiactl
+     - /dev/nvidia-modeset:/dev/nvidia-modeset
+     - /dev/nvidia-uvm:/dev/nvidia-uvm
+     - /dev/nvidia-uvm-tools:/dev/nvidia-uvm-tools
    environment:
      - DEBUG=false
      - PLEX_UID=1000
      - PLEX_GID=1000
      - TZ=US/Mountain
      - CHANGE_CONFIG_DIR_OWNERSHIP=false
-     - PLEX_CLAIM=claim-random-stuff
+     - PLEX_CLAIM=claim-RANDOM-STUFF
      - ADVERTISE_IP=http://192.168.1.14:32400
      - ALLOWED_NETWORKS=192.168.1.0/24
    hostname: PWNplex

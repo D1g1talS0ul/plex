@@ -1,28 +1,31 @@
 diff --git a/Dockerfile b/Dockerfile
-index 91f244c..4dc4444 100644
+index 30b6685..354b08b 100644
 --- a/Dockerfile
 +++ b/Dockerfile
 @@ -1,4 +1,4 @@
 -FROM ubuntu:20.04
-+FROM nvidia/cuda:11.2.0-base-ubuntu20.04
++FROM nvidia/cuda:11.7.0-base-ubuntu20.04
  
- ARG S6_OVERLAY_VERSION=v2.1.0.0
+ ARG S6_OVERLAY_VERSION=v2.2.0.3
  ARG S6_OVERLAY_ARCH=amd64
-@@ -15,7 +15,7 @@ ENTRYPOINT ["/init"]
+@@ -14,8 +14,9 @@ ENTRYPOINT ["/init"]
+ 
  RUN \
  # Update and get dependencies
-     apt-get update && \
+-    apt-get update && \
 -    apt-get install -y \
-+    apt-get install -y --no-install-recommends \
++    apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/3bf863cc.pub && \
++    apt update && \
++    apt install -y --no-install-recommends \
        tzdata \
        curl \
        xmlstarlet \
-@@ -23,6 +23,8 @@ RUN \
+@@ -23,6 +24,8 @@ RUN \
        unrar \
        beignet-opencl-icd \
        ocl-icd-libopencl1 \
-+      libnvidia-encode-460 \
-+      libnvidia-decode-460 \
++      libnvidia-encode-515 \
++      libnvidia-decode-515 \
      && \
      \
  # Fetch and extract S6 overlay
