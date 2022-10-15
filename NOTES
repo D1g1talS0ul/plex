@@ -7,7 +7,7 @@ wget https://us.download.nvidia.com/XFree86/Linux-x86_64/515.65.01/NVIDIA-Linux-
 check which version of nvidia-dkms is installed
 apt list --installed | grep nvidia-dkms
 update to match Nvidia production driver if needed
-apt install nvidia-dkms-515
+apt install nvidia-dkms-515 nvidia-utils-515 nvidia-compute-515
 
 
 install the Nvidia driver just downloaded from nvidia.com
